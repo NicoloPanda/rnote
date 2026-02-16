@@ -189,8 +189,14 @@ impl PenHolder {
     ) -> (EventPropagation, WidgetFlags) {
         let mut widget_flags = WidgetFlags::default();
 
+        let old_style = self.current_pen.style();
+
         if let Some(pen_mode) = pen_mode {
             widget_flags |= self.change_pen_mode(pen_mode, engine_view);
+
+            if pen_mode == PenMode::Eraser {
+                let _ = self.change_style(PenStyle::Eraser, engine_view);
+            }
         }
 
         // Handle the event with the current pen
@@ -209,6 +215,8 @@ impl PenHolder {
         //
         // This is also needed because pens might have claimed/requested an animation frame.
         widget_flags.redraw = true;
+
+        let _ = self.change_style(old_style, engine_view);
 
         (event_result.propagate, widget_flags)
     }

@@ -448,8 +448,8 @@ pub(crate) fn retrieve_modifier_keys(modifier: gdk::ModifierType) -> HashSet<Mod
 fn retrieve_pen_mode(event: &gdk::Event) -> Option<PenMode> {
     let device_tool = event.device_tool()?;
     match device_tool.tool_type() {
-        gdk::DeviceToolType::Pen => Some(PenMode::Pen),
         gdk::DeviceToolType::Eraser => Some(PenMode::Eraser),
+        gdk::DeviceToolType::Pen => Some(PenMode::Pen),
         _ => None,
     }
 }
